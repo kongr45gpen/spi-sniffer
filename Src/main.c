@@ -417,8 +417,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD3_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : MOSI_Pin MISO_Pin */
-  GPIO_InitStruct.Pin = MOSI_Pin|MISO_Pin;
+  /*Configure GPIO pins : MISO_Pin MOSI_Pin */
+  GPIO_InitStruct.Pin = MISO_Pin|MOSI_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -426,7 +426,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : CLK_Pin */
   GPIO_InitStruct.Pin = CLK_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(CLK_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : NSS_Pin */
