@@ -61,10 +61,10 @@
 #define VCP_RX_GPIO_Port GPIOA
 #define LD3_Pin GPIO_PIN_3
 #define LD3_GPIO_Port GPIOB
-#define MOSI_Pin GPIO_PIN_4
-#define MOSI_GPIO_Port GPIOB
-#define MISO_Pin GPIO_PIN_5
+#define MISO_Pin GPIO_PIN_4
 #define MISO_GPIO_Port GPIOB
+#define MOSI_Pin GPIO_PIN_5
+#define MOSI_GPIO_Port GPIOB
 #define CLK_Pin GPIO_PIN_6
 #define CLK_GPIO_Port GPIOB
 #define CLK_EXTI_IRQn EXTI9_5_IRQn
