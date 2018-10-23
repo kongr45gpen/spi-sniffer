@@ -167,10 +167,19 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  UART_printf("Welcome to SPI-Sniffer\r\n");
-
   // Reset the terminal formatting
   UART_printf("\e[0m");
+
+  // Documentation
+  UART_printf("\r\n ** SPI Sniffer **\r\n");
+	UART_printf("Key: \r\n");
+	UART_printf("\e[33mOrange\e[39m: \e[1;33mMOSI\e[0;39m (Master Out - Serial In ) \r\n");
+	UART_printf("\e[36m  Cyan\e[39m: \e[1;36mMISO\e[0;39m (Master In  - Serial Out) \r\n");
+	UART_printf("\e[32m  \u2925 \u2930\e[39m : NSS LOW \r\n");
+	UART_printf("\e[31m  \u2924 \u292f\e[39m : NSS HIGH \r\n");
+	UART_printf("        (Double arrow means NSS has switched state twice)\r\n");
+	UART_printf("\e[39m   !!! means an error has occurred\r\n");
+  UART_printf(" Enjoy! \r\n\r\n");
 
   uint32_t lastTime = HAL_GetTick();
   uint32_t lastSeparatorTime = HAL_GetTick();
@@ -201,7 +210,7 @@ int main(void)
   			UART_printf("!!!COW\r\n"); // copy overwrite
   		}
 
-  		displayPosition = 0;
+  		displayPosition = 0; // Lose data instead of printing corrupt data
   		if (oldDisplayPosition > 0) {
   			// Data exists
   			UART_printf("\e[33m");
@@ -218,9 +227,9 @@ int main(void)
 								UART_printf("\e[32m\u2930\e[33m");
 							}
 						} else if (nssPrint[i] & 0x01) {
-							UART_printf("\e[32m\u2924\e[33m");
+							UART_printf("\e[32m\u2925\e[33m");
 						} else if (nssPrint[i] & 0x02) {
-							UART_printf("\e[31m\u2925\e[33m");
+							UART_printf("\e[31m\u2924\e[33m");
 						}
 					} else {
 						UART_printf(" ");
@@ -239,9 +248,9 @@ int main(void)
 								UART_printf("\e[32m\u2930\e[36m");
 							}
 						} else if (nssPrint[i] & 0x01) {
-							UART_printf("\e[32m\u2924\e[36m");
+							UART_printf("\e[32m\u2925\e[36m");
 						} else if (nssPrint[i] & 0x02) {
-							UART_printf("\e[31m\u2925\e[36m");
+							UART_printf("\e[31m\u2924\e[36m");
 						}
 						nssPrint[i] = 0; // Reset for next packet
 					} else {
