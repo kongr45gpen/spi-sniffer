@@ -94,7 +94,40 @@ inline static void printOneChar(uint8_t character, uint8_t isMOSI) {
 #else
 	UART_printf("%02x", character);
 #endif
+}
 
+inline static void printNSS(uint8_t nss, uint8_t isMOSI) {
+	if (nss & 0x08) { // NSS asserted
+		if (nss & 0x03) { // NSS changed between two states
+			if (nss & 0x04) { // NSS last value was HIGH
+				if (isMOSI) {
+					UART_printf("\e[31m\u292f\e[33m");
+				} else {
+					UART_printf("\e[31m\u292f\e[36m");
+				}
+			} else { // NSS last value was LOW
+				if (isMOSI) {
+					UART_printf("\e[32m\u2930\e[33m");
+				} else {
+					UART_printf("\e[32m\u2930\e[36m");
+				}
+			}
+		} else if (nss & 0x01) { // NSS value was LOW
+			if (isMOSI) {
+				UART_printf("\e[32m\u2925\e[33m");
+			} else {
+				UART_printf("\e[32m\u2925\e[36m");
+			}
+		} else if (nss & 0x02) { // NSS value was HIGH
+			if (isMOSI) {
+				UART_printf("\e[31m\u2924\e[33m");
+			} else {
+				UART_printf("\e[31m\u2924\e[36m");
+			}
+		}
+	} else {
+		UART_printf(" ");
+	}
 }
 /* USER CODE END PFP */
 
@@ -217,45 +250,12 @@ int main(void)
 
 				for (int i = 0; i < oldDisplayPosition; i++) {
 					printOneChar(mosiPrint[i], 1);
-
-					// NSS assertion
-					if (nssPrint[i] & 0x08) {
-						if (nssPrint[i] & 0x03) {
-							if (nssPrint[i] & 0x04) {
-								UART_printf("\e[31m\u292f\e[33m");
-							} else {
-								UART_printf("\e[32m\u2930\e[33m");
-							}
-						} else if (nssPrint[i] & 0x01) {
-							UART_printf("\e[32m\u2925\e[33m");
-						} else if (nssPrint[i] & 0x02) {
-							UART_printf("\e[31m\u2924\e[33m");
-						}
-					} else {
-						UART_printf(" ");
-					}
+					printNSS(nssPrint[i], 1);
 				}
 				UART_printf("\e[39m\r\n\e[36m");
 				for (int i = 0; i < oldDisplayPosition; i++) {
 					printOneChar(misoPrint[i], 0);
-
-					// NSS assertion
-					if (nssPrint[i] & 0x08) {
-						if (nssPrint[i] & 0x03) {
-							if (nssPrint[i] & 0x04) {
-								UART_printf("\e[31m\u292f\e[36m");
-							} else {
-								UART_printf("\e[32m\u2930\e[36m");
-							}
-						} else if (nssPrint[i] & 0x01) {
-							UART_printf("\e[32m\u2925\e[36m");
-						} else if (nssPrint[i] & 0x02) {
-							UART_printf("\e[31m\u2924\e[36m");
-						}
-						nssPrint[i] = 0; // Reset for next packet
-					} else {
-						UART_printf(" ");
-					}
+					printNSS(nssPrint[i], 0);
 
 				}
 				UART_printf("\e[39m\r\n");
